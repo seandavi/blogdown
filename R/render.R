@@ -111,7 +111,7 @@ build_rmds = function(files) {
     }
   }
   
-  BiocParallel::register(MulticoreParam())
+  BiocParallel::register(BiocParallel::MulticoreParam())
   BiocParallel::bplapply(files, processFile)
   return(TRUE)
 }
