@@ -91,7 +91,7 @@ build_rmds = function(files) {
     if (file.copy(shared_yml, copy)) copied_yaml <<- c(copied_yaml, copy)
   }
 
-  for (f in files) {
+  processFile = function(f) {
     d = dirname(f)
     out = output_file(f, to_md <- is_rmarkdown(f))
     copy_output_yml(d)
@@ -110,6 +110,10 @@ build_rmds = function(files) {
       })
     }
   }
+  
+  BiocParallel::register(MulticoreParam())
+  BiocParallel::bplapply(files, processFile)
+  return(TRUE)
 }
 
 render_page = function(input, script = 'render_page.R') {
